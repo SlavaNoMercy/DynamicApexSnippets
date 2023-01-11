@@ -1,13 +1,81 @@
 {
   "trailingComma": "none",
+  "apexInsertFinalNewline": false,
   "overrides": [
-    {
-      "files": "**/lwc/**/*.html",
-      "options": { "parser": "lwc" }
-    },
-    {
-      "files": "*.{cmp,page,component}",
-      "options": { "parser": "html" }
-    }
+      {
+          "files": "**/__Frontend_LWC_Resources/**/*.js",
+          "options": {
+              "semi": true,
+              "singleQuote": true,
+              "tabWidth": 4,
+              "printWidth": 100
+          }
+      },
+      {
+          "files": "webpack.config.js",
+          "options": {
+              "semi": true,
+              "singleQuote": true,
+              "tabWidth": 4,
+              "printWidth": 100
+          }
+      },
+      {
+          "files": "**/__Frontend_LWC_Resources/**/*.html",
+          "options": {
+              "parser": "lwc",
+              "tabWidth": 4,
+              "bracketSameLine": true,
+              "printWidth": 100
+          }
+      },
+      {
+          "files": "**/lwc/**/*.html",
+          "options": {
+              "parser": "lwc",
+              "tabWidth": 4,
+              "bracketSameLine": true,
+              "printWidth": 150
+          }
+      },
+      {
+          "files": "**/lwc/**/*.js",
+          "options": {
+              "semi": true,
+              "singleQuote": true,
+              "tabWidth": 4,
+              "printWidth": 150
+          }
+      },
+      {
+          "files": "*.{cmp,page,component}",
+          "options": {
+              "parser": "html",
+              "tabWidth": 4,
+              "printWidth": 150
+          }
+      },
+      {
+          "files": "*.{cls,trigger}",
+          "options": {
+              "tabWidth": 4,
+              "printWidth": 150
+          }
+      },
+      {
+          "files": "__Frontend_LWC_Resources/frontend/components/**/**/*.html",
+          "options": {
+              "parser": "lwc",
+              "tabWidth": 4,
+              "printWidth": 150
+          }
+      },
+      {
+          "files": "*.{css,scss}",
+          "options": {
+              "tabWidth": 4,
+              "printWidth": 150
+          }
+      }
   ]
 }
