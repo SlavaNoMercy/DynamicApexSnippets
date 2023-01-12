@@ -3,7 +3,7 @@ public with sharing class DynamicSObjectGenerator {
         Schema.SObjectType typeDefinition = Schema.getGlobalDescribe().get(typeName);
 
         if (typeDefinition == null) {
-            throw new TypeNotDefinedException('Chosen SObject Type does not exist.');
+            throw new TypeNotDefinedException(typeName);
         }
 
         return typeDefinition.newSObject();

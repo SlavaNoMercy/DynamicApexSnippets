@@ -1,10 +1,38 @@
-// Use .apex files to store anonymous Apex.
-// You can execute anonymous Apex in VS Code by selecting the
-//     apex text and running the command:
-//     SFDX: Execute Anonymous Apex with Currently Selected Text
-// You can also execute the entire file by running the command:
-//     SFDX: Execute Anonymous Apex with Editor Contents
+String queryStr =
+  'SELECT Id, Name, ' +
+  '(SELECT LastName, FirstName FROM Contacts LIMIT 3)' +
+  ' FROM Account LIMIT 5';
 
-string tempvar = 'Enter_your_name_here';
-System.debug('Hello World!');
-System.debug('My name is ' + tempvar);
+SObject [] accs = Database.query(queryStr);
+
+for (SObject acc : accs) {
+    Object accName = acc.get('Name');
+    SObject [] contacts = acc.getSObjects('Contacts');
+    
+    for (SObject con : contacts) {
+        Object conLastName = con.get('LastName');
+        Object conFirstName = con.get('FirstName');
+
+        System.debug('Parent account: ' + accName);
+        System.debug('Contact info: ' + conFirstName + ' ' + conLastName);
+    }
+}
+
+// dynamic SOQL
+
+String accName = 'ShsH';
+
+SObject acc = Database.query('SELECT Id, Name FROM Account WHERE Name = :accName');
+
+System.debug(acc);
+
+// System.debug(Url.getOrgDomainUrl().toExternalForm());
+
+// Event publish from Apex
+
+Order_Event__e event = new Order_Event__e(
+    Has_Shipped__c = false,
+    Order_Number__c = '745003-6'
+);
+
+Eventbus.publish(event);
