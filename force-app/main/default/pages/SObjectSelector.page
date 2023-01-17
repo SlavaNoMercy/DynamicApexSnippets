@@ -1,0 +1,93 @@
+<apex:page controller="SObjectListViewCtrl">
+    <apex:includeScript value="/soap/ajax/25.0/connection.js" />
+    <apex:includeScript value="/soap/ajax/25.0/apex.js" />
+    <apex:includeScript value="{!URLFOR($Resource.clusterizeJS, 'Clusterize.js-master/clusterize.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.clusterizeJS, 'Clusterize.js-master/clusterize.css')}" /> <!-- not working -->
+    <apex:form id="formId">
+        <style>
+            .rowElement {
+                position: relative;
+                margin: 6px;
+            }
+
+            .side-menu_label {
+                float: left;
+                width: 250px;
+                opacity: 0;
+                position: absolute;
+                transition: ease-in-out all 0.4s;
+            }
+
+            .rowElement:hover .side-menu__label {
+                opacity: 1;
+            }
+        </style>
+        <apex:pageBlock id="allSObjects">
+            <apex:outputLabel value="SObject Name" />
+            <apex:selectList value="{!selectedType}" id="pickList" size="1">
+                <apex:selectOptions value="{!sobjectList}" />
+            </apex:selectList>
+        </apex:pageBlock>
+    </apex:form>
+    <div id="scrollArea" class="clusterize-scroll">
+        <div id="contentArea" class="clusterize-content">
+            <div class="clusterize-no-data">Loading data…</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        let selector = document.getElementById("{!$Component.formId.allSObjects.pickList}");
+
+        function getFieldType(field) {
+            sforce.connection.sessionId = "{!$Api.Session_ID}";
+            let result = sforce.apex.execute("SObjectListViewCtrl", "getFieldType", { fieldName: field.textContent, sobjName: selector.value });
+            console.log(result[0]);
+            let label = document.getElementById(`${field.textContent}`);
+            label.textContent = "Field Data Type: " + result[0];
+        }
+
+        function displayFieldsInfo(listOfFields) {
+            if (listOfFields.length == 0) {
+                return;
+            }
+            let data = [];
+
+            for (let i = 0; i < listOfFields.length; i++) {
+                console.log(listOfFields[i]);
+                field = listOfFields[i];
+                let el = `<div class="rowElement" onclick="getFieldType(this)">${field}<label id="${field}" class="side-menu_label"></label></div>`;
+                el.id = field;
+                el.textContent = field;
+                // el.addEventListener("click", getFieldType(field, selector.value));
+                data.push(el);
+            }
+
+            const clusterize = new Clusterize({
+                rows: data,
+                scrollId: "scrollArea",
+                contentId: "contentArea"
+            });
+        }
+
+        function changeForm() {
+            console.log("here");
+            if (selector.value == "" || selector.value == null) {
+                return;
+            }
+
+            Visualforce.remoting.Manager.invokeAction("{!$RemoteAction.SObjectListViewCtrl.getRequiredFields}", selector.value, (result, event) => {
+                if (event.status) {
+                    console.log(result);
+                    displayFieldsInfo(result);
+                } else {
+                    console.log(event.message);
+                }
+            });
+        }
+
+        window.onload = () => {
+            console.log("{!$Component.formId.allSObjects.pickList}");
+            console.log("selector => ", selector);
+            selector.addEventListener("change", changeForm);
+        };
+    </script>
+</apex:page>
