@@ -42,7 +42,6 @@ public with sharing class DynamicSObjectGenerator {
         }
 
         searchResult = Search.query(searchStr.removeEnd(','));
-
         return searchResult;
     }
 }

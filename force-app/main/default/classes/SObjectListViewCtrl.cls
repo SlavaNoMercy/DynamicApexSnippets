@@ -12,7 +12,7 @@ global with sharing class SObjectListViewCtrl {
         for (String key : sobjMap.keySet()) {
             sobjList.add(new SelectOption(key, key));
             
-            if (sobjList.size() == 10) {
+            if (sobjList.size() == 20) {
                 break;
             }
         }
@@ -33,7 +33,6 @@ global with sharing class SObjectListViewCtrl {
 
         sobjToken = Schema.describeSObjects(new List<String>{sobjName});
         fieldsMap = sobjToken[0].fields.getMap();
-
         requiredFieldNames.addAll(fieldsMap.keySet());
         
         return requiredFieldNames;
@@ -54,5 +53,4 @@ global with sharing class SObjectListViewCtrl {
         
         return fieldType;
     }
-
 }

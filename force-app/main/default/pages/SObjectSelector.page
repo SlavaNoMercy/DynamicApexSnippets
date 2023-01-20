@@ -2,7 +2,7 @@
     <apex:includeScript value="/soap/ajax/25.0/connection.js" />
     <apex:includeScript value="/soap/ajax/25.0/apex.js" />
     <apex:includeScript value="{!URLFOR($Resource.clusterizeJS, 'Clusterize.js-master/clusterize.min.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.clusterizeJS, 'Clusterize.js-master/clusterize.css')}" /> <!-- not working -->
+    <apex:stylesheet value="{!URLFOR($Resource.clusterizeJS, 'Clusterize.js-master/clusterize.css')}" /> 
     <apex:form id="formId">
         <style>
             .rowElement {
